@@ -29,7 +29,7 @@ namespace UI
 
             foreach (var village in _gameMaster.VillageSystem.Villages)
             {
-                var temp = Instantiate(_villagePanelPrefab, transform);
+                var temp = Instantiate(_villagePanelPrefab, transform.GetChild(0).GetChild(0));
                 temp.GetComponent<VillagePanel>().UpdateInfo(village.GetInfo(), village.GetName());
                 _panels.Add(temp);
             }

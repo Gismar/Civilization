@@ -6,6 +6,7 @@ TagManager:
   tags:
   - HUD
   - Master
+  - MainUI
   layers:
   - Default
   - TransparentFX

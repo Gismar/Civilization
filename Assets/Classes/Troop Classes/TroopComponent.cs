@@ -13,14 +13,14 @@ namespace Troop
         public int DistanceFromStart { get; set; }
         public int RaidID { get; set; }
         public Vector3Int Location { get; set; }
-        public FinishedTraveling FinishedTravelingDeletage;
         private bool _reachedDestination;
         private Dictionary<Supplies, float> _totalInfo;
         private Dictionary<Supplies, float> _widthrawAmount;
         private Dictionary<Supplies, float> _depositAmount;
         private ICollect _interactingObject;
+        private ICollect _startingLocation;
 
-        public TroopComponent(int travelTime, List<TroopEntity> troops, int id, Dictionary<Supplies, float> wAmount, Dictionary<Supplies,float> dAmount, ICollect interactingObject)
+        public TroopComponent(int travelTime, List<TroopEntity> troops, int id, Dictionary<Supplies, float> wAmount, Dictionary<Supplies,float> dAmount, ICollect interactingObject, ICollect village)
         {
             Troops = troops;
             TravelTime = travelTime;
@@ -28,6 +28,7 @@ namespace Troop
             _widthrawAmount = wAmount;
             _depositAmount = dAmount;
             _interactingObject = interactingObject;
+            _startingLocation = village;
         }
 
         private void CollectInfo()
@@ -108,6 +109,7 @@ namespace Troop
             }
             if (DistanceFromStart == 0 && _reachedDestination)
             {
+                _startingLocation.Deposit(_depositAmount);
                 return true;
             }
             return false;

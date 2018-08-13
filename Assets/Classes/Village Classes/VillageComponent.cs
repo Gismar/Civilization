@@ -84,6 +84,11 @@ namespace Village
             _village.Food *= _village.FoodDecay;
         }
 
+        public void MorePeople()
+        {
+            _village.Population++;
+        }
+
         public Dictionary<Supplies, float> Withdraw(Dictionary<Supplies, float> material)
         {
             CollectInfo();

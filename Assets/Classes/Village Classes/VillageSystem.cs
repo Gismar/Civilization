@@ -13,7 +13,6 @@ namespace Village
         public VillageSystem()
         {
             Villages = new List<VillageComponent>();
-            Test();
             _resources = new Dictionary<Supplies, float>();
             foreach (var item in System.Enum.GetValues(typeof(Supplies)).Cast<Supplies>())
             {
@@ -26,16 +25,9 @@ namespace Village
             CreateFirstVillage(pos);
         }
 
-        private void Test()
-        {
-            var village = new VillageComponent(new Vector3Int(0, 0, 0), 5, new VillageEntity(20, 15, 50, 50, "YEET"));
-
-            AddVillage(village);
-        }
-
         private void CreateFirstVillage(Vector3Int pos)
         {
-            var village = new VillageComponent(pos, 5, new VillageEntity(20, 15, 50, 50, "Base"));
+            var village = new VillageComponent(pos, 2, new VillageEntity(10, 10, 2, 2, "Base"));
 
             AddVillage(village);
         }
@@ -95,7 +87,10 @@ namespace Village
         public void PerCycle()
         {
             foreach (VillageComponent village in Villages)
+            {
                 village.FoodDecay();
+                village.MorePeople();
+            }
         }
     }
 }

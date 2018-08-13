@@ -22,7 +22,7 @@ namespace Village
             Water = water;
             Stone = stone;
             Wood = wood;
-            VillageName = VillageName;
+            VillageName = villageName;
             Heat = 22f;
             FoodDecay = 0.99f;
         }

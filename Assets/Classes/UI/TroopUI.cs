@@ -50,7 +50,7 @@ namespace UI
             foreach (var raid in _gameMaster.TroopSystem.TroopGroup)
             {
                 var temp = Instantiate(_raidGroupPanelPrefab, _raidUI.transform.GetChild(0).GetChild(0));
-                temp.GetComponent<TroopsPanel>().SetUI(raid.GetInfo());
+                temp.GetComponent<TroopsPanel>().SetUI(raid.GetInfo(), raid.ElapsedTime);
                 temp.GetComponent<Button>().onClick.AddListener(delegate { OpenRaidTroopsUI(raid.RaidID); });
                 _raidGroupPanels.Add(temp);
             }

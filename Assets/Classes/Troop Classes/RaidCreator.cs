@@ -17,12 +17,10 @@ public class RaidCreator : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI _totalTimeText;
     [SerializeField] private GameObject _errorText;
 
-    public Village.VillageComponent StartingVillage { get; set; } = 
-        new Village.VillageComponent(Vector3Int.zero, 2, new Village.VillageEntity(0,0,0,0,"YEET"));
-    public ICollect Destination { get; set; } =
-        new Village.VillageComponent(Vector3Int.up, 2, new Village.VillageEntity(0, 0, 0, 0, "YEET"));
+    public Village.VillageComponent StartingVillage { get; set; }
+    public ICollect Destination { get; set; }
 
-    void Start () {
+    public void Setup () {
         _startingItems = new Dictionary<Supplies, float>();
         _withdrawItems = new Dictionary<Supplies, float>();
         _depositItems = new Dictionary<Supplies, float>();
@@ -102,9 +100,9 @@ public class RaidCreator : MonoBehaviour {
                 _startingItems[Supplies.Stone] / population,
                 _startingItems[Supplies.Wood] / population));
         }
-        _gameMaster.TroopSystem.AddGroup(travelTime, temp,
-            _withdrawItems, _depositItems, Destination);
-        Destroy(this);
+        _gameMaster.TroopSystem.AddGroup(Mathf.FloorToInt(travelTime / 2f), temp,
+            _withdrawItems, _depositItems, Destination, StartingVillage);
+        Destroy(this.gameObject);
     }
 
     private void ThrowErrorText(string message)

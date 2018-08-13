@@ -13,14 +13,16 @@ namespace UI
         [SerializeField] private Image _produceImage;
         [SerializeField] private Image _consumeImage;
         [SerializeField] private Sprite[] _icons;
+        [SerializeField] private Button _button;
 
-        public void UpdateUI(KeyValuePair<Supplies, float> produce, KeyValuePair<Supplies, float> consume)
+        public void UpdateUI(KeyValuePair<Supplies, float> produce, KeyValuePair<Supplies, float> consume, MapControl map)
         {
             _produceText.text = FormatMaterial(produce.Key, produce.Value);
             _consumeText.text = FormatMaterial(consume.Key, consume.Value);
 
             _produceImage.sprite = GetSprite(produce.Key);
             _consumeImage.sprite = GetSprite(consume.Key);
+            _button.onClick.AddListener(delegate { map.SetupRaid(); });
         }
 
         private string FormatMaterial(Supplies material, float amount)
@@ -44,6 +46,11 @@ namespace UI
         private Sprite GetSprite(Supplies index)
         {
             return _icons[(int)index];
+        }
+
+        public void DestroySelf()
+        {
+            Destroy(transform.gameObject);
         }
     }
 }

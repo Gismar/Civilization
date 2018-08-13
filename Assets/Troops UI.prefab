@@ -87,7 +87,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224470065584290714}
-  - component: {fileID: 114990854573128526}
   - component: {fileID: 114423346182342938}
   - component: {fileID: 114705666484262640}
   m_Layer: 5
@@ -347,19 +346,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114990854573128526
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1859801602376440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b58c8002f18bb444b9a913edfeeac343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _villagePanelPrefab: {fileID: 1182097286267600, guid: 35802e251e9bbef4da2ac8d7bec44840,
-    type: 2}
 --- !u!222 &222202963060362602
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -403,8 +389,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00006358283}
-  m_SizeDelta: {x: 0, y: -831.9155}
+  m_AnchoredPosition: {x: 0, y: 0.000000076168604}
+  m_SizeDelta: {x: 0, y: -844}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224498523732157440
 RectTransform:

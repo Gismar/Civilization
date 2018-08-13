@@ -13,28 +13,6 @@ namespace Troop
         public TroopSystem()
         {
             TroopGroup = new List<TroopComponent>();
-            Test();
-        }
-
-        private void Test()
-        {
-            var village = new Village.VillageComponent(Vector3Int.up, 2, new Village.VillageEntity(100, 100, 1001, 100, "YEET"));
-            for (int i = 0; i < 20; i++)
-            {
-                var troopAmount = Random.Range(0, 10f);
-                var troop = new List<TroopEntity>();
-                for (int j = 0; j < troopAmount; j++)
-                    troop.Add(new TroopEntity(Random.Range(0, 100), Random.Range(0, 100), Random.Range(0, 100), Random.Range(0, 100)));
-                AddGroup(10, troop, new Dictionary<Supplies, float>()
-                {
-                    {Supplies.Wood, 10f },
-                    {Supplies.Water, 10f }
-                }, new Dictionary<Supplies, float>()
-                {
-                    {Supplies.Stone, 10f },
-                    {Supplies.Food, 10f }
-                }, village);
-            }
         }
 
         public void AddGroup(TroopComponent group)
@@ -43,9 +21,9 @@ namespace Troop
             count++;
         }
 
-        public void AddGroup(int travelTime, List<TroopEntity> troops, Dictionary<Supplies, float> wAmount, Dictionary<Supplies, float> dAmount, ICollect interactingObject)
+        public void AddGroup(int travelTime, List<TroopEntity> troops, Dictionary<Supplies, float> wAmount, Dictionary<Supplies, float> dAmount, ICollect interactingObject, ICollect village)
         {
-            var temp = new TroopComponent(travelTime, troops, count + TroopGroup.Count, wAmount, dAmount, interactingObject);
+            var temp = new TroopComponent(travelTime, troops, count + TroopGroup.Count, wAmount, dAmount, interactingObject, village);
             TroopGroup.Add(temp);
             count++;
         }
