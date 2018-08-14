@@ -18,14 +18,14 @@ namespace Troop
         public void AddGroup(TroopComponent group)
         {
             TroopGroup.Add(group);
-            count++;
+            count = count == int.MaxValue ? 0 : count + 1;
         }
 
         public void AddGroup(int travelTime, List<TroopEntity> troops, Dictionary<Supplies, float> wAmount, Dictionary<Supplies, float> dAmount, ICollect interactingObject, ICollect village)
         {
-            var temp = new TroopComponent(travelTime, troops, count + TroopGroup.Count, wAmount, dAmount, interactingObject, village);
+            var temp = new TroopComponent(travelTime, troops, count, wAmount, dAmount, interactingObject, village);
             TroopGroup.Add(temp);
-            count++;
+            count = count == int.MaxValue ? 0 : count + 1;
         }
 
         public void PerTick()
@@ -34,6 +34,7 @@ namespace Troop
             foreach (TroopComponent group in TroopGroup)
             {
                 group.CheckSurvivors();
+                if (group == null) { temp.Add(group); return; }
                 var isDone = group.Move();
                 if (isDone) temp.Add(group);
             }

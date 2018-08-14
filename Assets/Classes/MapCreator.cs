@@ -12,7 +12,7 @@ public class MapCreator : MonoBehaviour {
 
     private void Awake()
     {
-        float scale = 0.25f;
+        float scale = Random.Range(0.2f, 0.8f);
         for (int x = 0; x < _mapSize.width; x++)
             for (int y = 0; y < _mapSize.height; y++)
                 if (x == Mathf.FloorToInt(_mapSize.width / 2f) && y == Mathf.FloorToInt(_mapSize.height / 2f))

@@ -114,17 +114,17 @@ public class MapControl : MonoBehaviour {
                 }
             case "Mountain":
                 {
-                    OpenBuyUI(new KeyValuePair<Supplies, float>(Supplies.Wood, 5), pos);
+                    OpenBuyUI(new KeyValuePair<Supplies, float>(Supplies.Wood, 1), pos);
                     break;
                 }
             case "Forest":
                 {
-                    OpenBuyUI(new KeyValuePair<Supplies, float>(Supplies.Water, 5), pos);
+                    OpenBuyUI(new KeyValuePair<Supplies, float>(Supplies.Water, 1), pos);
                     break;
                 }
             case "Lake":
                 {
-                    OpenBuyUI(new KeyValuePair<Supplies, float>(Supplies.Stone, 5), pos);
+                    OpenBuyUI(new KeyValuePair<Supplies, float>(Supplies.Stone, 1), pos);
                     break;
                 }
             default:
@@ -191,7 +191,10 @@ public class MapControl : MonoBehaviour {
         Debug.Log("buying");
         if (!CheckCost(buyingMaterial))
         {
-            ThrowErrorText("Not Enough Materials to build");
+            if (buyingMaterial.Key == Supplies.Population)
+                ThrowErrorText("Cannot leave a village alone");
+            else 
+                ThrowErrorText($"Not Enough {buyingMaterial.Key.ToString()} to build");
             return;
         }
         TileBase temp = null;
@@ -212,7 +215,7 @@ public class MapControl : MonoBehaviour {
                 break;
             case Supplies.Population:
                 temp =  _villageTile;
-                _gameMaster.VillageSystem.AddVillage(new Village.VillageComponent(_buyUI.GetComponent<BuyUI>().Position, 2, new Village.VillageEntity(0, 0, 0, 0, "Base")));
+                _gameMaster.VillageSystem.AddVillage(new Village.VillageComponent(_buyUI.GetComponent<BuyUI>().Position, 2, new Village.VillageEntity(5, 5, 5, 5, "Base")));
                 break;
             case Supplies.Food:
                 temp = _farmTile;
@@ -227,6 +230,8 @@ public class MapControl : MonoBehaviour {
     private bool CheckCost(KeyValuePair<Supplies, float> material)
     {
         bool canBuy = true;
+        if (material.Key == Supplies.Population)
+            if (_mainUI.TotalItems[material.Key] < material.Value + 1) return false;
         if (_mainUI.TotalItems[material.Key] < material.Value) return false;
         _gameMaster.VillageSystem.ReduceMaterial(material);
         return canBuy;

@@ -66,7 +66,6 @@ namespace Troop
                     troop.Food = troop.Food - 1f > 0 ? troop.Food - 1f : 0;
                     troop.SurvivalChance = troop.Food == 0 ? troop.SurvivalChance - 0.2f : troop.SurvivalChance - 0.02f;
                 }
-                troop.SurvivalChance *= troop.Heat / 20f;
             }
         }
 
@@ -88,10 +87,43 @@ namespace Troop
 
         public void CheckSurvivors()
         {
-            var deathChance = Random.Range(0f, 1f);
             for (int i = Troops.Count - 1; i > 0; i--)
             {
+                var deathChance = Random.Range(0f, 1f);
                 if (deathChance > Troops[i].SurvivalChance) Troops.RemoveAt(i);
+                Debug.Log(Troops.Count);
+            }
+        } 
+
+        private void Deposit()
+        {
+            CollectInfo();
+            var temp = new Dictionary<Supplies, float>()
+            {
+                {Supplies.Heat, Mathf.Min(_totalInfo[Supplies.Heat], _depositAmount[Supplies.Heat])},
+                {Supplies.Water, Mathf.Min(_totalInfo[Supplies.Water], _depositAmount[Supplies.Water])},
+                {Supplies.Wood, Mathf.Min(_totalInfo[Supplies.Wood], _depositAmount[Supplies.Wood])},
+                {Supplies.Stone, Mathf.Min(_totalInfo[Supplies.Stone], _depositAmount[Supplies.Stone])},
+                {Supplies.Food, Mathf.Min(_totalInfo[Supplies.Food], _depositAmount[Supplies.Food])}
+            };
+            _depositAmount = temp;
+            foreach (var troop in Troops)
+            {
+                troop.Stone -= _depositAmount[Supplies.Stone];
+                troop.Wood -= _depositAmount[Supplies.Wood];
+                troop.Water -= _depositAmount[Supplies.Water];
+                troop.Food -= _depositAmount[Supplies.Food];
+            }
+        }
+
+        private void Withdraw()
+        {
+            foreach (var troop in Troops)
+            {
+                troop.Stone += _widthrawAmount[Supplies.Stone] / Troops.Count;
+                troop.Wood += _widthrawAmount[Supplies.Wood] / Troops.Count;
+                troop.Water += _widthrawAmount[Supplies.Water] / Troops.Count;
+                troop.Food += _widthrawAmount[Supplies.Food] / Troops.Count;
             }
         }
 
@@ -102,14 +134,15 @@ namespace Troop
             if (ElapsedTime == TravelTime)
             {
                 _reachedDestination = true;
+                Deposit();
                 _interactingObject.Deposit(_depositAmount);
-                _interactingObject.Withdraw(_widthrawAmount);
-                _depositAmount = _widthrawAmount;
-                _widthrawAmount = new Dictionary<Supplies, float>();
+                _widthrawAmount = _interactingObject.Withdraw(_widthrawAmount);
+                Withdraw();
             }
             if (DistanceFromStart == 0 && _reachedDestination)
             {
-                _startingLocation.Deposit(_depositAmount);
+                CollectInfo();
+                _startingLocation.Deposit(_totalInfo);
                 return true;
             }
             return false;

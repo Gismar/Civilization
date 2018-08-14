@@ -18,6 +18,7 @@ namespace Troop
         public TroopEntity(float food, float water, float stone, float wood)
         {
             Population = 1;
+            SurvivalChance = 1f;
             Food = food;
             Water = water;
             Stone = stone;

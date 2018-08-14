@@ -17,6 +17,7 @@ public class RaidCreator : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI _totalTimeText;
     [SerializeField] private GameObject _errorText;
 
+    private int _travelTime;
     public Village.VillageComponent StartingVillage { get; set; }
     public ICollect Destination { get; set; }
 
@@ -25,7 +26,8 @@ public class RaidCreator : MonoBehaviour {
         _withdrawItems = new Dictionary<Supplies, float>();
         _depositItems = new Dictionary<Supplies, float>();
         _gameMaster = GameObject.FindGameObjectWithTag("Master").GetComponent<GameMaster>();
-        _totalTimeText.text = (Mathf.FloorToInt(Vector3Int.Distance(Destination.Position, StartingVillage.Position) * 10) * 2).ToString("0s");
+        _travelTime = Mathf.CeilToInt(Vector3Int.Distance(StartingVillage.Position, Destination.Position)) * 20;
+        _totalTimeText.text = _travelTime.ToString("0s");
 
         foreach (var data in System.Enum.GetValues(typeof(Supplies)).Cast<Supplies>())
         {
@@ -75,16 +77,15 @@ public class RaidCreator : MonoBehaviour {
             ThrowErrorText("Need atleast 1 person");
             return;
         }
-        int travelTime = Mathf.CeilToInt(Vector3Int.Distance(StartingVillage.Position, Destination.Position) * 10) * 2;
         var population = (int) _startingItems[Supplies.Population];
-        float required = GetFoodRequire(travelTime, population);
+        float required = GetFoodRequire(_travelTime, population);
 
         if (_startingItems[Supplies.Food] < required)
         {
             ThrowErrorText($"Not enough food, need atleast {(required - _startingItems[Supplies.Food]).ToString("0.0kc")} more food");
             return;
         }
-        required = WaterRequired(travelTime, population);
+        required = WaterRequired(_travelTime, population);
         if(_startingItems[Supplies.Water] < required)
         {
             ThrowErrorText($"Not enough water, need atleast {(required - _startingItems[Supplies.Water]).ToString("0.0L")} more water");
@@ -100,7 +101,11 @@ public class RaidCreator : MonoBehaviour {
                 _startingItems[Supplies.Stone] / population,
                 _startingItems[Supplies.Wood] / population));
         }
-        _gameMaster.TroopSystem.AddGroup(Mathf.FloorToInt(travelTime / 2f), temp,
+        foreach (var data in _startingItems)
+        {
+            StartingVillage.ModifyVillage(data);
+        }
+        _gameMaster.TroopSystem.AddGroup(Mathf.FloorToInt(_travelTime / 2f), temp,
             _withdrawItems, _depositItems, Destination, StartingVillage);
         Destroy(this.gameObject);
     }
@@ -159,7 +164,7 @@ public class RaidCreator : MonoBehaviour {
 
     private int IsPopulationCapped(int value)
     {
-        var pop = Mathf.FloorToInt(StartingVillage.GetInfo()[Supplies.Population]);
+        var pop = Mathf.FloorToInt(StartingVillage.GetInfo()[Supplies.Population]) - 1;
         if (pop < value) value = pop;
         return value;
     }

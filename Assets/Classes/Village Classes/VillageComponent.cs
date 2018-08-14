@@ -109,7 +109,7 @@ namespace Village
             return temp;
         }
 
-        private void ModifyVillage(KeyValuePair<Supplies, float> material)
+        public void ModifyVillage(KeyValuePair<Supplies, float> material)
         {
             switch (material.Key)
             {

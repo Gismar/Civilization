@@ -27,7 +27,7 @@ namespace Village
 
         private void CreateFirstVillage(Vector3Int pos)
         {
-            var village = new VillageComponent(pos, 2, new VillageEntity(10, 10, 2, 2, "Base"));
+            var village = new VillageComponent(pos, 5, new VillageEntity(25, 25, 25, 25, "Base"));
 
             AddVillage(village);
         }

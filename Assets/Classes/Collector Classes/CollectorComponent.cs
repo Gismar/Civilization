@@ -30,8 +30,10 @@ namespace Collector
         public void Produce()
         {
             if (_collector.Consume.Count == 0) return;
-
-            _collector.Produce.Enqueue(new KeyValuePair<Supplies, float>(_produceType, 10));
+            var r = UnityEngine.Random.Range(5, 15);
+            for (int i = 0; i < r; i++){
+                _collector.Produce.Enqueue(new KeyValuePair<Supplies, float>(_produceType, 1));
+            }
             _collector.Consume.Dequeue();
         }
 
@@ -69,7 +71,14 @@ namespace Collector
         #region ICollect Functions
         public Dictionary<Supplies, float> Withdraw(Dictionary<Supplies, float> material)
         {
-            var temp = new Dictionary<Supplies, float>();
+            var temp = new Dictionary<Supplies, float>(){
+                {Supplies.Population, 0},
+                {Supplies.Heat,0},
+                {Supplies.Water, 0},
+                {Supplies.Wood, 0},
+                {Supplies.Stone, 0},
+                {Supplies.Food, 0}
+            };
             if (!material.ContainsKey(_produceType)) return temp;
 
             var count = _collector.Produce.Count < material[_produceType] ? _collector.Produce.Count : Mathf.FloorToInt(material[_produceType]);
